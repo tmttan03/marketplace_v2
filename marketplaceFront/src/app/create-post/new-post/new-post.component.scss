@@ -1,0 +1,25 @@
+#new_post .modal-title{
+    color: #1d2129;
+    font-size: 14px;
+}
+
+#new_post .modal-body{
+    padding: 16px;
+}
+
+#new_post .card{
+    padding: 5px;
+}
+
+.list-group-item-light {
+    color: #343a40!important; 
+    background-color: #e9ebee!important;
+}
+
+.pac-container {
+    z-index: 10000 !important;
+}
+
+#new_post{
+    z-index:1041 !important;
+}

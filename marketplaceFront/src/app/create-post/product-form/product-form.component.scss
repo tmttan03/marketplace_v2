@@ -1,0 +1,32 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+.example-container > * {
+  width: 100%;
+}
+  
+.mat-form-field-infix {
+    font-size: 13px!important;
+}
+
+.mat-select-panel {
+    margin-top: 45px;
+}
+
+
+span.mat-checkbox-label {
+  font-size: 14px;
+}
+
+#btn-create{
+  float: right;
+  margin-top: 10px;
+}
+
+.btn-fb{
+  background-color: #4267b2!important;
+  border-color: #4267b2!important;
+  color: white!important;
+}

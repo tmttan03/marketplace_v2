@@ -1,0 +1,16 @@
+<div class="container" *ngFor="let product of products; let i = index">
+  <div class="row text-center" > 
+      <div class="col-xl-3" style="margin-bottom: 15px;">
+            <div class="card">     
+              <img class="img-fluid" src="http://placehold.it/245" alt=""/> 
+              <span class="badge badge-dark" id="price-badge">{{ product.price }}</span>
+
+              <div class="card-content" id="product-details">
+                  <hr>
+                    <b><p>{{ product.name }} </p></b>
+                    <small>{{ product.location }} {{ product.created_at | timeAgo }}</small>
+                  <br>
+              </div><!-- card content -->
+          </div><!-- card -->
+      </div>  <!-- col-xl-4 -->
+</div><!-- container -->
