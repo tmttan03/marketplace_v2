@@ -20,10 +20,16 @@ export class ProductFormComponent implements OnInit {
   public latlong: any = {};
   public searchControl: FormControl;
 
-  productForm : FormGroup;
-  
+  nestedProductForms : any = FormGroup;
+
   constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private fb: FormBuilder){
-    this.productForm = this.fb.group({
+    this.nestedProductForms = this.fb.group({
+      productforms: this.fb.array([this.productForm()])
+    });
+  }
+
+  productForm(): FormGroup{
+    return this.fb.group({
       is_draft: [],
       name : ['' , [
         Validators.required
@@ -41,74 +47,33 @@ export class ProductFormComponent implements OnInit {
       stocks : ['1', [
         Validators.required
       ]],
+      images : this.fb.array([]),
     });
   }
 
-  get is_draft(){
-    return this.productForm.get('is_draft');
+  fileuploads(evt:any, index:any) {
+    const files = evt.target.files;
+    console.log(files);
+    const control = <FormArray> this.nestedProductForms.controls.productforms['controls'][index].controls['images'].controls;
+    for(let i = 0; i < files.length; i++){
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64 = reader.result + '';
+        control.push(this.fb.control(base64));
+      };
+      reader.readAsDataURL(files[i]);
+    }
+    evt.srcElement.value = null;
   }
 
-  get name(){
-    return this.productForm.get('name');
-  }
 
-  get price(){
-    return this.productForm.get('price');
-  }
-
-  get location(){
-    return this.productForm.get('location');
-  }
-
-  get category(){
-    return this.productForm.get('category');
-  }
-
-  get description(){
-    return this.productForm.get('description');
-  }
-
-  get stock(){
-    return this.productForm.get('stock');
+  removeImage(formIndex: number, imageIndex: number){
+    const control = <FormArray> this.nestedProductForms.controls.productforms['controls'][formIndex].controls['images'];
+    control.removeAt(imageIndex);
   }
 
   ngOnInit() {
-    this.zoom = 8;
-    this.latitude = 39.8282
-    this.longitude = -98.5795;
-    this.searchControl = new FormControl();
-    this.mapsAPILoader.load().then(() => {
-      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: []
-      });
-
-      autocomplete.addListener('place_changed', () =>{
-        this.ngZone.run(() =>{
-          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          if (place.geometry === undefined || place.geometry === null){
-            return ;
-          }  
-
-          const latlong = {
-            latitude: place.geometry.location.lat,
-            longitude: place.geometry.location.lng
-          };
-
-          this.latlongs.push(latlong);
-          this.searchControl.reset();
-        });
-      });
-    }) 
-  }
-
-  private setCurrentPosition(){
-    if('geolocation' in navigator){
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 8;
-      });
-    }
+   
   }
   
 }

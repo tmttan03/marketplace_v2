@@ -1,66 +1,48 @@
-<form [formGroup]="productForm">
-    <div class="example-container">
-        <div id="check-draft"><mat-checkbox formControlName="is_draft">Draft</mat-checkbox></div>
-        <mat-form-field>
-            <input matInput #name placeholder="What are you selling?" formControlName="name" maxlength="100">
-            <mat-hint align="end">{{name.value.length}} / 100</mat-hint>
-            <mat-error>
-                This field is required.
-            </mat-error>
-        </mat-form-field><br>
+<form [formGroup]="nestedProductForms">
+    <div formArrayName="productforms">
+        <div [formGroupName]="i" *ngFor="let reactiveForm of nestedProductForms.controls.productforms.controls; let i = index">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="is_draft" formControlName="is_draft">
+                <label class="form-check-label" for="defaultCheck1">
+                    Draft
+                </label>
+            </div><br>
 
-        <mat-form-field>
-            <input matInput placeholder="Price" type="number"  class="example-right-align" min="0" formControlName="price" >
-            <span matPrefix>$&nbsp;</span>
-            <span matSuffix>.00</span>
-            <mat-error>
-                This field is required.
-            </mat-error>
-        </mat-form-field><br>
-        
-        <mat-form-field>
-            <input matInput id="place" #search formControlName="location" placeholder="Location" type="text" class="example-right-align" autocomplete="off">
-            <span matPrefix><i class="fas fa-map-marker-alt"></i>&nbsp;</span>
-            <mat-error>
-                This field is required.
-            </mat-error>
-        </mat-form-field><br>
+            <div class="form-group">
+                <input class="form-control" #name placeholder="What are you selling?" formControlName="name" maxlength="100">
+            </div>
+            <div class="form-group">
+                <input class="form-control" placeholder="Price" type="number"  min="0" formControlName="price" >
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="place" #search formControlName="location" placeholder="Location" type="text" autocomplete="off">    
+            </div>
+            <div class="form-group">
+                <select class="form-control" placeholder="Select a Category" name="car" formControlName="category" >
+                    <option value="" selected></option>
+                    <option>Mimi</option>
+                </select>     
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" #description placeholder="Describe Item" formControlName="description" maxlength="500" ></textarea>
+            </div>
+            <input type="file" accept=".png, .jpg, .jpeg"  (change)="fileuploads($event, i)" multiple><br>
 
-        <mat-form-field>
-            <select matNativeControl placeholder="Select a Category" name="car" formControlName="category" >
-                <option value="" selected></option>
-                <option>Mimi</option>
-            </select>
-            <mat-error>
-                This field is required.
-            </mat-error>
-        </mat-form-field><br>
-
-        <mat-form-field>
-            <textarea matInput #description placeholder="Describe Item" formControlName="description" maxlength="500" ></textarea>
-            <mat-hint align="end">{{description.value.length}} / 500</mat-hint>
-        </mat-form-field>
-
-        <div class="form-group">
-            <input type="file" accept=".png, .jpg, .jpeg"  class="form-control" multiple><br>    
+            <div class="form-group">
+                <span *ngFor="let image of nestedProductForms.controls.productforms.controls[i].controls['images'].controls; let j = index" class="imagecontainer">
+                    <img [src]="image.value" style="width:150px; height:150px; margin-top: 5px; margin-right: 5px">
+                    <div class="overlay">
+                        <a href="javascript:void(0)" class="icon" title="remove" (click) ="removeImage(i,j)"><i class="fa fa-trash"></i></a>
+                    </div>
+                </span>
+            </div>
+            <div class="form-group">
+                <input class="form-control" placeholder="Stocks on Hand" type="number"  min="1" formControlName="stocks">
+            </div>
+            <div class="form-group">
+                <button id="btn-create" class="btn btn-fb btn-sm" type="submit" [disabled]="!reactiveForm.valid" (click)="save(reactiveForm.value)">Submit</button>
+            </div>
         </div>
-
-        <div class="form-group">
-            <span></span>
-            
-        </div>
-        
-        
-        <mat-form-field>
-            <input matInput placeholder="Stocks on Hand" type="number" class="example-right-align" min="1" formControlName="stocks" >
-            <span matPrefix>#&nbsp;</span>
-            <mat-error>
-                This field is required.
-            </mat-error>
-        </mat-form-field><br>
-    </div>      
-
-    <div class="form-group">
-        <button id="btn-create" class="btn btn-fb btn-sm" [disabled]="!productForm.valid" type="submit">Submit</button>
     </div>
 </form>
+
