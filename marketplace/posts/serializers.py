@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Product, Category
+from .models import Product, Category, ProductAlbum, Stock
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
@@ -24,3 +24,15 @@ class ProductMiniSerializer(serializers.HyperlinkedModelSerializer):
 		fields = ('id','name','description', 'price', 'location', 'created_at')
 
 
+class ProductAlbumSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ProductAlbum
+        #fields = ('id','product','image')
+        fields = '__all__'
+
+
+class StockSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Stock
+        #fields = ('id','product','image')
+        fields = '__all__'

@@ -1,8 +1,14 @@
 .example-container {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .example-container > * {
-    width: 100%;
-  }
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+.btn-fb{
+  background-color: #4267b2!important;
+  border-color: #4267b2!important;
+  color: white!important;
+}

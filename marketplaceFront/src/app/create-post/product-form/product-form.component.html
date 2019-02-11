@@ -1,32 +1,33 @@
-<form [formGroup]="nestedProductForms">
+<form [formGroup]="nestedProductForms" (ngSubmit)="onSubmit()">
     <div formArrayName="productforms">
         <div [formGroupName]="i" *ngFor="let reactiveForm of nestedProductForms.controls.productforms.controls; let i = index">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="is_draft" formControlName="is_draft">
+                <input class="form-check-input" type="checkbox" id="is_draft" formControlName="is_draft">
                 <label class="form-check-label" for="defaultCheck1">
                     Draft
                 </label>
             </div><br>
 
             <div class="form-group">
-                <input class="form-control" #name placeholder="What are you selling?" formControlName="name" maxlength="100">
+                <input class="form-control" #name placeholder="What are you selling?" formControlName="name" maxlength="100" >
             </div>
             <div class="form-group">
                 <input class="form-control" placeholder="Price" type="number"  min="0" formControlName="price" >
             </div>
             <div class="form-group">
-                <input class="form-control" id="place" #search formControlName="location" placeholder="Location" type="text" autocomplete="off">    
+                <input class="form-control" id="place" #search formControlName="location" placeholder="Location" type="text" autocomplete="off"  >    
             </div>
+            
             <div class="form-group">
-                <select class="form-control" placeholder="Select a Category" name="car" formControlName="category" >
-                    <option value="" selected></option>
-                    <option>Mimi</option>
+                <select class="form-control" placeholder="Select a Category" name="car" formControlName="category"  >
+                    <option value="" selected disabled="disabled">---Select a Category---</option>
+                    <option  *ngFor="let category of categories">{{ category.title }}</option>
                 </select>     
             </div>
             <div class="form-group">
-                <textarea class="form-control" #description placeholder="Describe Item" formControlName="description" maxlength="500" ></textarea>
+                <textarea class="form-control" #description placeholder="Describe Item" formControlName="description" maxlength="500"></textarea>
             </div>
-            <input type="file" accept=".png, .jpg, .jpeg"  (change)="fileuploads($event, i)" multiple><br>
+            <input type="file" accept=".png, .jpg, .jpeg"  (change)="fileuploads($event, i)" multiple required><br>
 
             <div class="form-group">
                 <span *ngFor="let image of nestedProductForms.controls.productforms.controls[i].controls['images'].controls; let j = index" class="imagecontainer">
@@ -40,7 +41,7 @@
                 <input class="form-control" placeholder="Stocks on Hand" type="number"  min="1" formControlName="stocks">
             </div>
             <div class="form-group">
-                <button id="btn-create" class="btn btn-fb btn-sm" type="submit" [disabled]="!reactiveForm.valid" (click)="save(reactiveForm.value)">Submit</button>
+                <button id="btn-create" class="btn btn-fb btn-sm" type="submit" [disabled]="!reactiveForm.valid" >Submit</button>
             </div>
         </div>
     </div>

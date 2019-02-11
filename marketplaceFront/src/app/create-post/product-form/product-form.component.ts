@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, FormGroupDirective, NgF
 import { MapsAPILoader } from '@agm/core';
 import {} from "googlemaps";
 
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-product-form',
@@ -22,10 +23,15 @@ export class ProductFormComponent implements OnInit {
 
   nestedProductForms : any = FormGroup;
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private fb: FormBuilder){
+  products = [{name : 'name'}];
+  categories = [{title : 'title'}];
+  selectedproduct;
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private fb: FormBuilder, private api:ApiService){
     this.nestedProductForms = this.fb.group({
       productforms: this.fb.array([this.productForm()])
     });
+    this.getCategories();
+    //this.selectedproduct = { id:-1, name: '' , description: '', price: 0, location:'', category:'', is_draft:true, seller:''};
   }
 
   productForm(): FormGroup{
@@ -47,14 +53,15 @@ export class ProductFormComponent implements OnInit {
       stocks : ['1', [
         Validators.required
       ]],
-      images : this.fb.array([]),
+      images : this.fb.array([], [Validators.required]),
     });
   }
 
+ 
+
   fileuploads(evt:any, index:any) {
     const files = evt.target.files;
-    console.log(files);
-    const control = <FormArray> this.nestedProductForms.controls.productforms['controls'][index].controls['images'].controls;
+    const control = <FormArray> this.nestedProductForms.controls.productforms['controls'][index].controls['images'];
     for(let i = 0; i < files.length; i++){
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -62,6 +69,7 @@ export class ProductFormComponent implements OnInit {
         control.push(this.fb.control(base64));
       };
       reader.readAsDataURL(files[i]);
+   
     }
     evt.srcElement.value = null;
   }
@@ -72,6 +80,23 @@ export class ProductFormComponent implements OnInit {
     control.removeAt(imageIndex);
   }
 
+  getCategories = () => {
+    this.api.getAllCategories().subscribe(
+      data => {
+        this.categories = data;
+      }, 
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  onSubmit() {
+    // TODO: Use EventEmitter with form value
+    console.warn(this.nestedProductForms.value);
+  }
+
+
   ngOnInit() {
    
   }
@@ -79,4 +104,8 @@ export class ProductFormComponent implements OnInit {
 }
 
 
+
+function newFunction(data: any) {
+  console.log(data);
+}
 

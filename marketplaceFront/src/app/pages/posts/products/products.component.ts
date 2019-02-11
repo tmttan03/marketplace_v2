@@ -8,10 +8,9 @@ import { ApiService } from 'src/app/shared/api.service';
 export class ProductsComponent implements OnInit {
 
   products = [{name : 'name'}];
-  products_;
+  selectedproduct;;
   constructor(private api:ApiService) { 
     this.getProducts();
-    this.products_ = { id:-1, name: '' , description: '', price:0, location:'', category:'', seller:'', created_at:'' };
   }
   
   ngOnInit() {
@@ -22,12 +21,10 @@ export class ProductsComponent implements OnInit {
     this.api.getAllProducts().subscribe(
       data => {
         this.products = data;
-        console.log(data);
       }, 
       error => {
         console.log(error);
       }
     )
   }
-
 }

@@ -23,6 +23,8 @@ from users import views as user_views
 router = routers.DefaultRouter()
 router.register(r'products', views.ProductViewSet)
 router.register(r'categories', views.CategoryViewSet)
+router.register(r'album', views.ProductAlbumViewSet)
+router.register(r'stock', views.StockViewSet)
 router.register(r'users', user_views.UserViewSet)
 
 # Wire up our API using automatic URL routing.
